@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DBTransactions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataManager</a> &gt; <a href="index.source.html" class="el_package">com.DataManager.DBTransactions</a> &gt; <span class="el_source">DBTransactions.java</span></div><h1>DBTransactions.java</h1><pre class="source lang-java linenums">package com.DataManager.DBTransactions;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import com.DataManager.Beans.Person;
+import com.DataManager.Connection.ConnectionManager;
+
+<span class="fc" id="L13">public class DBTransactions {</span>
+<span class="fc" id="L14">	PreparedStatement ps = null;</span>
+<span class="fc" id="L15">	Statement stmt = null;</span>
+<span class="fc" id="L16">	Connection conn = null;</span>
+
+	public void addData(Person person) {
+		try {
+<span class="nc" id="L20">			conn = ConnectionManager.createConnection();</span>
+<span class="nc" id="L21">			String sql = &quot;insert into persons(ID, firstName, lastName) values(?, ?, ?)&quot;;</span>
+<span class="nc" id="L22">			ps = conn.prepareStatement(sql);</span>
+<span class="nc" id="L23">			ps.setInt(1, person.getId());</span>
+<span class="nc" id="L24">			ps.setString(2, person.getFirstName());</span>
+<span class="nc" id="L25">			ps.setString(3, person.getLastName());</span>
+<span class="nc" id="L26">			ps.executeUpdate();</span>
+			// System.out.println(&quot;Data Inserted Successfully&quot;);
+<span class="nc" id="L28">			conn.close();</span>
+<span class="nc" id="L29">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+			try {
+<span class="nc" id="L32">				conn.close();</span>
+<span class="nc" id="L33">			} catch (SQLException e1) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L35">				e1.printStackTrace();</span>
+<span class="nc" id="L36">			}</span>
+<span class="nc" id="L37">			e.printStackTrace();</span>
+<span class="nc" id="L38">		}</span>
+
+<span class="nc" id="L40">	}</span>
+
+	public void updateData(Person person) {
+		try {
+<span class="nc" id="L44">			conn = ConnectionManager.createConnection();</span>
+<span class="nc" id="L45">			String sql = &quot;update persons set firstName= ? , lastName= ? where ID=?&quot;;</span>
+<span class="nc" id="L46">			ps = conn.prepareStatement(sql);</span>
+<span class="nc" id="L47">			ps.setInt(3, person.getId());</span>
+<span class="nc" id="L48">			ps.setString(1, person.getFirstName());</span>
+<span class="nc" id="L49">			ps.setString(2, person.getLastName());</span>
+<span class="nc" id="L50">			ps.executeUpdate();</span>
+			// System.out.println(&quot;Data Updated Successfully&quot;);
+<span class="nc" id="L52">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L54">			e.printStackTrace();</span>
+<span class="nc" id="L55">		}</span>
+<span class="nc" id="L56">	}</span>
+
+	public void deleteData(Person person) {
+		try {
+<span class="nc" id="L60">			conn = ConnectionManager.createConnection();</span>
+<span class="nc" id="L61">			String sql = &quot;delete from persons  where ID=?&quot;;</span>
+<span class="nc" id="L62">			ps = conn.prepareStatement(sql);</span>
+<span class="nc" id="L63">			ps.setInt(1, person.getId());</span>
+
+<span class="nc" id="L65">			ps.executeUpdate();</span>
+			// System.out.println(&quot;Data Deleted Successfully&quot;);
+<span class="nc" id="L67">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+			try {
+<span class="nc" id="L70">				conn.close();</span>
+<span class="nc" id="L71">			} catch (SQLException e1) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L73">				e1.printStackTrace();</span>
+<span class="nc" id="L74">			}</span>
+<span class="nc" id="L75">			e.printStackTrace();</span>
+<span class="nc" id="L76">		}</span>
+<span class="nc" id="L77">	}</span>
+
+	public ArrayList&lt;Person&gt; listData() {
+<span class="nc" id="L80">		ArrayList&lt;Person&gt; persons = new ArrayList&lt;Person&gt;();</span>
+		try {
+<span class="nc" id="L82">			conn = ConnectionManager.createConnection();</span>
+<span class="nc" id="L83">			stmt = conn.createStatement();</span>
+			String sql;
+<span class="nc" id="L85">			sql = &quot;SELECT * FROM PERSONS&quot;;</span>
+<span class="nc" id="L86">			ResultSet rs = stmt.executeQuery(sql);</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">			if (rs != null) {</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">				while (rs.next()) {</span>
+					// Retrieve by column name
+<span class="nc" id="L90">					int id = rs.getInt(&quot;ID&quot;);</span>
+<span class="nc" id="L91">					String firstName = rs.getString(&quot;FirstName&quot;);</span>
+<span class="nc" id="L92">					String lastName = rs.getString(&quot;LastName&quot;);</span>
+
+<span class="nc" id="L94">					Person person = new Person(id, firstName, lastName);</span>
+<span class="nc" id="L95">					persons.add(person);</span>
+<span class="nc" id="L96">				}</span>
+			} else {
+<span class="nc" id="L98">				System.out.println(&quot;ResultSet is Empty&quot;);</span>
+			}
+
+<span class="nc" id="L101">			return persons;</span>
+<span class="nc" id="L102">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+			try {
+<span class="nc" id="L105">				conn.close();</span>
+<span class="nc" id="L106">			} catch (SQLException e1) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L108">				e1.printStackTrace();</span>
+<span class="nc" id="L109">			}</span>
+<span class="nc" id="L110">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L112">		return persons;</span>
+	}
+
+	public int countData() {
+<span class="fc" id="L116">		int count = 0;</span>
+		try {
+<span class="fc" id="L118">			conn = ConnectionManager.createConnection();</span>
+<span class="fc" id="L119">			stmt = conn.createStatement();</span>
+			String sql;
+
+<span class="fc" id="L122">			sql = &quot;SELECT * FROM PERSONS&quot;;</span>
+<span class="fc" id="L123">			ResultSet rs = stmt.executeQuery(sql);</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">			if (rs != null) {</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">				while (rs.next()) {</span>
+					// Retrieve by column name
+<span class="fc" id="L127">					count++;</span>
+				}
+			} else {
+<span class="nc" id="L130">				System.out.println(&quot;ResultSet is Empty&quot;);</span>
+			}
+<span class="nc" id="L132">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+			try {
+<span class="nc" id="L135">				conn.close();</span>
+<span class="nc" id="L136">			} catch (SQLException e1) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L138">				e1.printStackTrace();</span>
+<span class="nc" id="L139">			}</span>
+<span class="nc" id="L140">			e.printStackTrace();</span>
+<span class="fc" id="L141">		}</span>
+<span class="fc" id="L142">		return count;</span>
+	}
+
+	public boolean checkIDPresent(int id) {
+<span class="fc" id="L146">		boolean check = false;</span>
+		try {
+<span class="fc" id="L148">			conn = ConnectionManager.createConnection();</span>
+<span class="fc" id="L149">			stmt = conn.createStatement();</span>
+			String sql;
+
+<span class="fc" id="L152">			sql = &quot;SELECT * FROM PERSONS where id=&quot; + id;</span>
+<span class="fc" id="L153">			ResultSet rs = stmt.executeQuery(sql);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			if (rs != null) {</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">				while (rs.next()) {</span>
+					// Retrieve by column name
+<span class="fc" id="L157">					check = true;</span>
+				}
+			} else {
+<span class="nc" id="L160">				check = false;</span>
+<span class="nc" id="L161">				System.out.println(&quot;ResultSet is Empty&quot;);</span>
+			}
+<span class="nc" id="L163">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+			try {
+<span class="nc" id="L166">				conn.close();</span>
+<span class="nc" id="L167">			} catch (SQLException e1) {</span>
+				// TODO Auto-generated catch block
+<span class="nc" id="L169">				e1.printStackTrace();</span>
+<span class="nc" id="L170">			}</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
+<span class="fc" id="L172">		}</span>
+<span class="fc" id="L173">		return check;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

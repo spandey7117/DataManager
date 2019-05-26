@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainClass.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataManager</a> &gt; <a href="index.source.html" class="el_package">com.DataManager.Main</a> &gt; <span class="el_source">MainClass.java</span></div><h1>MainClass.java</h1><pre class="source lang-java linenums">package com.DataManager.Main;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+import com.DataManager.Middleware.MiddlewareProcess;
+
+<span class="nc" id="L8">public class MainClass {</span>
+
+	public static void main(String args[]) throws IOException {
+<span class="nc" id="L11">		MiddlewareProcess middlewareProcess = null;</span>
+<span class="nc" id="L12">		Scanner scanner = null;</span>
+		try {
+			while (true) {
+<span class="nc" id="L15">				scanner = new Scanner(System.in);</span>
+<span class="nc" id="L16">				System.out.println(&quot;Welcome to Person's Detail DataBase&quot;);</span>
+<span class="nc" id="L17">				System.out.println(&quot;Press 1 to Add new person&quot;);</span>
+<span class="nc" id="L18">				System.out.println(&quot;Press 2 to Edit person details&quot;);</span>
+<span class="nc" id="L19">				System.out.println(&quot;Press 3 to Delete person&quot;);</span>
+<span class="nc" id="L20">				System.out.println(&quot;Press 4 to Count person&quot;);</span>
+<span class="nc" id="L21">				System.out.println(&quot;Press 5 to List person&quot;);</span>
+<span class="nc" id="L22">				System.out.println(&quot;Press 6 to insert data from XML file&quot;);</span>
+<span class="nc" id="L23">				System.out.println(&quot;Press 7 to insert data from XML commandline input&quot;);</span>
+<span class="nc" id="L24">				System.out.println(&quot;Press 8 to Exit&quot;);</span>
+
+<span class="nc" id="L26">				middlewareProcess = new MiddlewareProcess();</span>
+<span class="nc" id="L27">				int input = 0;</span>
+				try {
+<span class="nc" id="L29">					input = scanner.nextInt();</span>
+<span class="nc" id="L30">				} catch (Exception e) {</span>
+<span class="nc" id="L31">					System.out.println(&quot;Invalid Input&quot;);</span>
+<span class="nc" id="L32">				}</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">				if (input == 0) {</span>
+<span class="nc" id="L34">					System.out.println(&quot;Enter Numeric value&quot;);</span>
+				}
+
+<span class="nc bnc" id="L37" title="All 2 branches missed.">				else if (input == 1) {</span>
+<span class="nc" id="L38">					middlewareProcess.addNewPerson(scanner);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">				} else if (input == 2) {</span>
+<span class="nc" id="L40">					middlewareProcess.updatePersonDetails(scanner);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">				} else if (input == 3) {</span>
+<span class="nc" id="L42">					middlewareProcess.deletePerson(scanner);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">				} else if (input == 4) {</span>
+<span class="nc" id="L44">					middlewareProcess.countAllPersons();</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">				} else if (input == 5) {</span>
+<span class="nc" id="L47">					middlewareProcess.listAllPersons();</span>
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">				} else if (input == 6) {</span>
+<span class="nc" id="L50">					middlewareProcess.insertThroughXMLPath(scanner);</span>
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">				} else if (input == 7) {</span>
+<span class="nc" id="L53">					middlewareProcess.insertThroughXML(scanner);</span>
+
+<span class="nc bnc" id="L55" title="All 2 branches missed.">				} else if (input == 8) {</span>
+<span class="nc" id="L56">					scanner.close();</span>
+<span class="nc" id="L57">					break;</span>
+				} else {
+<span class="nc" id="L59">					System.out.println(&quot;Invalid Input&quot;);</span>
+				}
+<span class="nc" id="L61">			}</span>
+		}
+
+<span class="nc" id="L64">		catch (Exception e) {</span>
+<span class="nc" id="L65">			System.out.println(e.getMessage());</span>
+<span class="nc" id="L66">			scanner.close();</span>
+<span class="nc" id="L67">			e.printStackTrace();</span>
+<span class="nc" id="L68">		}</span>
+<span class="nc" id="L69">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

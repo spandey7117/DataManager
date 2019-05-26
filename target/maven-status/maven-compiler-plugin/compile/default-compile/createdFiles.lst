@@ -1,0 +1,7 @@
+com/DataManager/Beans/Person.class
+com/DataManager/Connection/ConnectionManager.class
+com/DataManager/Middleware/MiddlewareProcess.class
+com/DataManager/Middleware/MiddlewareProcessInterface.class
+com/DataManager/Constants/Constants.class
+com/DataManager/DBTransactions/DBTransactions.class
+com/DataManager/Main/MainClass.class

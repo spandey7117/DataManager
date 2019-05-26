@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+DataManager,com.DataManager.Connection,ConnectionManager,8,12,0,0,4,4,1,1,1,1
+DataManager,com.DataManager.Beans,Person,36,0,0,0,16,0,8,0,8,0
+DataManager,com.DataManager.DBTransactions,DBTransactions,212,74,6,6,77,24,8,5,4,3
+DataManager,com.DataManager.Middleware,MiddlewareProcess,440,0,24,0,115,0,20,0,8,0
+DataManager,com.DataManager.Main,MainClass,127,0,18,0,46,0,11,0,2,0
+DataManager,com.DataManager.Constants,Constants,3,0,0,0,1,0,1,0,1,0

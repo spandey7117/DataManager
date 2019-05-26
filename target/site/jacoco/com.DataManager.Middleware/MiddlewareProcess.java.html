@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MiddlewareProcess.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataManager</a> &gt; <a href="index.source.html" class="el_package">com.DataManager.Middleware</a> &gt; <span class="el_source">MiddlewareProcess.java</span></div><h1>MiddlewareProcess.java</h1><pre class="source lang-java linenums">package com.DataManager.Middleware;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
+
+import com.DataManager.Beans.Person;
+import com.DataManager.DBTransactions.DBTransactions;
+
+<span class="nc" id="L23">public class MiddlewareProcess implements MiddlewareProcessInterface {</span>
+
+<span class="nc" id="L25">	DBTransactions dbTransactions = new DBTransactions();</span>
+
+	public void addNewPerson(Scanner scan) {
+		// TODO Auto-generated method stub
+
+<span class="nc" id="L30">		System.out.println(&quot;Enter person's details.&quot;);</span>
+<span class="nc" id="L31">		System.out.println(&quot;Enter ID (Numeric)&quot;);</span>
+
+		try {
+<span class="nc" id="L34">			int id = scan.nextInt();</span>
+<span class="nc" id="L35">			System.out.println(&quot;Enter First Name&quot;);</span>
+<span class="nc" id="L36">			String firsName = scan.next();</span>
+<span class="nc" id="L37">			System.out.println(&quot;Enter Second Name&quot;);</span>
+<span class="nc" id="L38">			String lastName = scan.next();</span>
+<span class="nc" id="L39">			Person person = new Person(id, firsName, lastName);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			if (dbTransactions.checkIDPresent(id)) {</span>
+<span class="nc" id="L41">				System.out.println(&quot;ID already present&quot;);</span>
+			} else {
+<span class="nc" id="L43">				dbTransactions.addData(person);</span>
+			}
+<span class="nc" id="L45">		} catch (InputMismatchException e) {</span>
+<span class="nc" id="L46">			System.out.println(&quot;Invalid Input&quot;);</span>
+<span class="nc" id="L47">		} catch (Exception e) {</span>
+<span class="nc" id="L48">			e.printStackTrace();</span>
+<span class="nc" id="L49">			System.out.println(&quot;Internal Error&quot;);</span>
+<span class="nc" id="L50">		}</span>
+
+<span class="nc" id="L52">	}</span>
+
+	public void updatePersonDetails(Scanner scanner) {
+		// TODO Auto-generated method stub
+
+		try {
+<span class="nc" id="L58">			System.out.println(&quot;Enter ID (Numeric)&quot;);</span>
+
+<span class="nc" id="L60">			int id = scanner.nextInt();</span>
+<span class="nc" id="L61">			System.out.println(&quot;Enter new first name&quot;);</span>
+
+<span class="nc" id="L63">			String firsName = scanner.next();</span>
+<span class="nc" id="L64">			System.out.println(&quot;Enter new last name&quot;);</span>
+
+<span class="nc" id="L66">			String lastName = scanner.next();</span>
+<span class="nc" id="L67">			Person person = new Person(id, firsName, lastName);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">			if (dbTransactions.checkIDPresent(id)) {</span>
+<span class="nc" id="L69">				dbTransactions.updateData(person);</span>
+			} else {
+<span class="nc" id="L71">				System.out.println(&quot;ID not present&quot;);</span>
+			}
+<span class="nc" id="L73">		} catch (InputMismatchException e) {</span>
+<span class="nc" id="L74">			System.out.println(&quot;Invalid Input&quot;);</span>
+<span class="nc" id="L75">		} catch (Exception e) {</span>
+<span class="nc" id="L76">			e.printStackTrace();</span>
+<span class="nc" id="L77">			System.out.println(&quot;Internal Error&quot;);</span>
+<span class="nc" id="L78">		}</span>
+
+<span class="nc" id="L80">	}</span>
+
+	public void listAllPersons() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L84">		ArrayList&lt;Person&gt; persons = dbTransactions.listData();</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		for (int i = 0; i &lt; persons.size(); i++) {</span>
+<span class="nc" id="L87">			System.out.println(&quot;ID: &quot; + persons.get(i).getId() + &quot;, First Name: &quot; + persons.get(i).getFirstName()</span>
+<span class="nc" id="L88">					+ &quot;, Last Name: &quot; + persons.get(i).getLastName());</span>
+		}
+<span class="nc" id="L90">	}</span>
+
+	public void countAllPersons() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L94">		int count = dbTransactions.countData();</span>
+<span class="nc" id="L95">		System.out.println(&quot;count of Persons present: &quot; + count);</span>
+<span class="nc" id="L96">	}</span>
+
+	public void deletePerson(Scanner scanner) {
+		// TODO Auto-generated method stub
+
+<span class="nc" id="L101">		System.out.println(&quot;Enter person's id (Numeric) to delete &quot;);</span>
+		try {
+<span class="nc" id="L103">			int id = scanner.nextInt();</span>
+
+<span class="nc" id="L105">			Person person = new Person();</span>
+<span class="nc" id="L106">			person.setId(id);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">			if (dbTransactions.checkIDPresent(id)) {</span>
+<span class="nc" id="L108">				dbTransactions.deleteData(person);</span>
+			} else {
+<span class="nc" id="L110">				System.out.println(&quot;ID not present&quot;);</span>
+			}
+<span class="nc" id="L112">		} catch (InputMismatchException e) {</span>
+<span class="nc" id="L113">			System.out.println(&quot;Invalid Input&quot;);</span>
+<span class="nc" id="L114">		} catch (Exception e) {</span>
+<span class="nc" id="L115">			e.printStackTrace();</span>
+<span class="nc" id="L116">			System.out.println(&quot;Internal Error&quot;);</span>
+<span class="nc" id="L117">		}</span>
+
+<span class="nc" id="L119">	}</span>
+
+	public void insertThroughXMLPath(Scanner scan) {
+		// TODO Auto-generated method stub
+<span class="nc" id="L123">		System.out.println(&quot;Enter path of XML file&quot;);</span>
+<span class="nc" id="L124">		String path = scan.next();</span>
+		try {
+<span class="nc" id="L126">			File inputFile = new File(path);</span>
+<span class="nc" id="L127">			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L128">			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="nc" id="L129">			Document doc = dBuilder.parse(inputFile);</span>
+<span class="nc" id="L130">			doc.getDocumentElement().normalize();</span>
+<span class="nc" id="L131">			NodeList nList = doc.getElementsByTagName(&quot;person&quot;);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">			for (int temp = 0; temp &lt; nList.getLength(); temp++) {</span>
+<span class="nc" id="L133">				Node nNode = nList.item(temp);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">				if (nNode.getNodeType() == Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L135">					Element eElement = (Element) nNode;</span>
+<span class="nc" id="L136">					int id = Integer.parseInt(eElement.getAttribute(&quot;ID&quot;));</span>
+<span class="nc" id="L137">					Person person = new Person(id, eElement.getElementsByTagName(&quot;firstName&quot;).item(0).getTextContent(),</span>
+<span class="nc" id="L138">							eElement.getElementsByTagName(&quot;lastName&quot;).item(0).getTextContent());</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">					if (dbTransactions.checkIDPresent(id)) {</span>
+<span class="nc" id="L140">						System.out.println(&quot;ID already present: &quot; + id);</span>
+					} else {
+<span class="nc" id="L142">						dbTransactions.addData(person);</span>
+					}
+				}
+			}
+<span class="nc" id="L146">		} catch (FileNotFoundException e2) {</span>
+<span class="nc" id="L147">			System.out.println(&quot;Incorrect Path, Please re-enter path&quot;);</span>
+<span class="nc" id="L148">		} catch (SAXParseException e1) {</span>
+<span class="nc" id="L149">			System.out.println(&quot;Invalid XML&quot;);</span>
+<span class="nc" id="L150">		} catch (Exception e) {</span>
+<span class="nc" id="L151">			e.printStackTrace();</span>
+<span class="nc" id="L152">		}</span>
+
+<span class="nc" id="L154">	}</span>
+
+	public void insertThroughXML(Scanner scan) {
+		// TODO Auto-generated method stub
+<span class="nc" id="L158">		System.out.println(&quot;Enter  XML and Press Enter&quot;);</span>
+<span class="nc" id="L159">		String input = &quot;&quot;;</span>
+<span class="nc" id="L160">		scan = new Scanner(System.in);</span>
+		try {
+			String line;
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			while (scan.hasNextLine()) {</span>
+<span class="nc" id="L164">				line = scan.nextLine();</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">				if (line.isEmpty()) {</span>
+<span class="nc" id="L166">					break;</span>
+				}
+<span class="nc" id="L168">				input += line + &quot;\n&quot;;</span>
+			}
+
+<span class="nc" id="L171">			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L172">			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="nc" id="L173">			InputSource is = new InputSource(new StringReader(input));</span>
+<span class="nc" id="L174">			Document doc = dBuilder.parse(is);</span>
+<span class="nc" id="L175">			doc.getDocumentElement().normalize();</span>
+<span class="nc" id="L176">			NodeList nList = doc.getElementsByTagName(&quot;person&quot;);</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			for (int temp = 0; temp &lt; nList.getLength(); temp++) {</span>
+<span class="nc" id="L178">				Node nNode = nList.item(temp);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">				if (nNode.getNodeType() == Node.ELEMENT_NODE) {</span>
+<span class="nc" id="L180">					Element eElement = (Element) nNode;</span>
+<span class="nc" id="L181">					int id = Integer.parseInt(eElement.getAttribute(&quot;ID&quot;));</span>
+<span class="nc" id="L182">					Person person = new Person(id, eElement.getElementsByTagName(&quot;firstName&quot;).item(0).getTextContent(),</span>
+<span class="nc" id="L183">							eElement.getElementsByTagName(&quot;lastName&quot;).item(0).getTextContent());</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">					if (dbTransactions.checkIDPresent(id)) {</span>
+<span class="nc" id="L185">						System.out.println(&quot;ID already present: &quot; + id);</span>
+					} else {
+<span class="nc" id="L187">						dbTransactions.addData(person);</span>
+					}
+				}
+			}
+<span class="nc" id="L191">		} catch (SAXParseException e1) {</span>
+<span class="nc" id="L192">			System.out.println(&quot;Invalid XML&quot;);</span>
+<span class="nc" id="L193">		} catch (Exception e) {</span>
+<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="nc" id="L195">		}</span>
+
+<span class="nc" id="L197">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
